@@ -1,0 +1,17 @@
+{
+  "name": "pontocom-entregadores",
+  "version": "1.0.0",
+  "description": "App de entregadores (PWA) do Pontocom Gás e Água - aceitar, andamento e concluir entregas pelo celular",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "cors": "^2.8.5"
+  }
+}

@@ -1,0 +1,71 @@
+PONTOCOM ENTREGADORES — app de celular pros entregadores
+===========================================================
+
+O que é
+-------
+App instalável no celular (PWA) pros entregadores aceitarem, marcarem
+"em andamento" e concluírem as entregas, mesmo fora da loja (com dados
+móveis). Segue o mesmo esquema do pontcom-frota: Node/Express +
+Postgres, hospedado no Render, banco no Neon.
+
+Passo 1 — Banco de dados (Neon)
+--------------------------------
+Se você já tem o projeto Postgres do pontcom-frota no Neon, pode criar
+um banco NOVO dentro dele (ou reaproveitar o mesmo host, só usando um
+banco separado) — não precisa criar uma conta nova.
+1. Entre em neon.tech e crie um novo banco (ex: "pontocom_entregadores").
+2. Copie a "Connection string" (começa com postgresql://...).
+
+Passo 2 — Publicar no Render
+------------------------------
+1. Suba esta pasta pro GitHub (um repositório novo, ex: pontocom-entregadores).
+2. No Render: New + → Web Service → conecte o repositório.
+3. Build Command: npm install
+   Start Command: npm start
+4. Em "Environment", adicione as variáveis:
+   - DATABASE_URL       = a connection string do Neon (passo 1)
+   - DESKTOP_API_KEY     = uma senha/chave que você inventa (ex: "pontocom2026x")
+                            → é a chave que o programa do computador vai usar
+                              pra mandar as entregas novas pra cá.
+   - ENTREGADOR_PIN      = um PIN simples pra equipe (ex: "4321"), opcional.
+                            Se não configurar, o app abre sem pedir PIN.
+5. Clique em Deploy. Quando terminar, o Render te dá um endereço tipo:
+   https://pontocom-entregadores.onrender.com
+
+Passo 3 — Ligar no programa do computador (Pontocom Desktop)
+---------------------------------------------------------------
+1. Abra o Pontocom Desktop → aba 🌐 Rede.
+2. No quadro "☁️ App Entregadores", cole:
+   - Endereço: https://pontocom-entregadores.onrender.com (o do passo 2)
+   - Chave da API: o mesmo valor que você colocou em DESKTOP_API_KEY
+3. Clique em Testar, depois Salvar.
+Pronto — toda entrega nova criada em "Nova Entrega" já vai aparecer no
+celular dos entregadores automaticamente.
+
+Passo 4 — Instalar no celular do entregador
+----------------------------------------------
+1. No celular, abra o navegador (Chrome no Android / Safari no iPhone)
+   e acesse o mesmo endereço: https://pontocom-entregadores.onrender.com
+2. Android (Chrome): toque nos 3 pontinhos → "Instalar aplicativo" ou
+   "Adicionar à tela inicial".
+   iPhone (Safari): toque no ícone de compartilhar (□↑) → "Adicionar à
+   Tela de Início".
+3. Abre um ícone como app de verdade. Na primeira vez, o entregador
+   digita o nome dele e o PIN (se você configurou um).
+
+Sobre o plano gratuito do Render
+------------------------------------
+No plano free, o serviço "dorme" depois de um tempo sem uso e demora
+uns 20-30 segundos pra acordar na primeira entrega do dia — é normal,
+só esperar. Se isso incomodar, dá pra migrar pro plano pago mais pra
+frente (poucos dólares/mês).
+
+Sincronização
+--------------
+- O programa do computador manda a entrega nova pra nuvem assim que é
+  salva, e também busca a cada alguns segundos o que os entregadores já
+  mexeram (aceitar/andamento/concluir), pra aba "Entregadores" do
+  computador ficar sempre atualizada também.
+- Se a internet cair, a entrega continua sendo salva localmente no
+  computador normalmente — só não aparece no celular até a conexão
+  voltar (o programa tenta de novo na próxima entrega).
